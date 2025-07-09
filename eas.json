@@ -1,0 +1,33 @@
+{
+  "cli": {
+    "version": ">= 14.2.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {
+      "ios": {
+        "workflow": "managed",
+        "distribution": "app-store"
+      },
+      "android": {
+        "workflow": "managed",
+        "buildType": "apk"
+      },
+      "autoIncrement": true
+    }
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "appleId": "YOUR_APPLE_ID_EMAIL" 
+      }
+    }
+  }
+}

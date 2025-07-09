@@ -1,0 +1,31 @@
+name: 📤 EAS Submit iOS Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  submit-ios:
+    name: 📤 Submit iOS to App Store
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: 🚀 Install EAS CLI
+        run: npm install -g eas-cli
+
+      - name: 🔐 Authenticate with Expo
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: |
+          eas whoami || eas login --token $EXPO_TOKEN
+
+      - name: 📤 Submit to App Store (Production)
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          EAS_APPLE_SUBMIT_KEY: ${{ secrets.EAS_APPLE_SUBMIT_KEY }}
+          APPLE_KEY_ID: ${{ secrets.APPLE_KEY_ID }}
+          APPLE_ISSUER_ID: ${{ secrets.APPLE_ISSUER_ID }}
+        run: |
+          eas submit --platform ios --profile production --non-interactive
