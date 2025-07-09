@@ -17,7 +17,7 @@ jobs:
 
       - name: 🔐 Authenticate with Expo
         env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }} 
         run: |
           eas whoami || eas login --token $EXPO_TOKEN
 
