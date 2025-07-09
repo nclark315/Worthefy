@@ -5,7 +5,7 @@ on:
 
 jobs:
   submit-ios:
-    name: 📤 Submit iOS to App Store
+    name: 📤 Submit iOS to App Store #
     runs-on: ubuntu-latest
 
     steps:
