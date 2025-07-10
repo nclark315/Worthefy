@@ -12,13 +12,11 @@
       "distribution": "internal"
     },
     "production": {
-      "ios": {
-        "workflow": "managed",
-        "distribution": "app-store"
-      },
       "android": {
-        "workflow": "managed",
         "buildType": "apk"
+      },
+      "ios": {
+        "distribution": "store"
       },
       "autoIncrement": true
     }
@@ -26,7 +24,7 @@
   "submit": {
     "production": {
       "ios": {
-        "appleId": "YOUR_APPLE_ID_EMAIL" 
+        "appleId": "YOUR_APPLE_ID_EMAIL"
       }
     }
   }

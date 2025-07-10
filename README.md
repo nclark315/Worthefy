@@ -163,3 +163,8 @@ Install the `.ipa` using TestFlight or Expo Go.
 
 > Contact: `@sardardev`  
 > Last updated: **July 2025**
+
+
+  "eas": {
+        "projectId": "49b188c5-ffa1-4b68-b449-a01bf4cb4d19"
+      }

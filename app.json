@@ -16,7 +16,6 @@
         "ITSAppUsesNonExemptEncryption": false
       }
     },
-
     "androidStatusBar": {
       "backgroundColor": "#282E3E",
       "translucent": false
@@ -71,7 +70,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "49b188c5-ffa1-4b68-b449-a01bf4cb4d19"
+        "projectId": "8d476c85-35d8-4678-9269-cebd7c3c5c6c"
       }
     }
   }
