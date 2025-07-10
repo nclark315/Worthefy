@@ -149,4 +149,112 @@ Once set up:
 
 ---
 
+# 📖 README for Manager – Android Deployment Setup
+
+This guide explains what YOU (the Play Store manager) need to do to enable automatic Android deployment using GitHub Actions and Expo EAS.
+
+---
+
+## ✅ What You Need to Do (One-Time Setup)
+
+---
+
+### 1. 🔐 Android Keystore (Already Done ✅)
+
+This is already created and linked via:
+```bash
+eas credentials -p android
+```
+
+You're using:
+- **Package Name:** `com.basel_07.worthfey`
+- **Profile:** `production`
+
+You do not need to change anything about the keystore unless migrating or resetting it.
+
+---
+
+### 2. 🧾 Create a Google Play Service Account
+
+This enables `eas submit` to upload your app directly to Google Play.
+
+#### Steps:
+
+1. Go to: https://console.cloud.google.com/iam-admin/serviceaccounts
+2. Create a new **Service Account**
+   - Project must be the one linked to your Google Play account
+3. Assign **"Editor"** or **"Release Manager"** role
+4. Enable the **Google Play Android Developer API**
+   - API Library: https://console.cloud.google.com/apis/library
+5. Create and download the `.json` key file
+
+📘 Reference: https://docs.expo.dev/submit/android/#create-a-google-service-account
+
+---
+
+### 3. 🔑 Upload the Service Account Key to EAS
+
+Use the following CLI command:
+
+```bash
+eas submit --platform android --profile production --key /path/to/your-service-account.json
+```
+
+This securely uploads the key to Expo, so future CI/CD workflows will work automatically.
+
+---
+
+### 4. 🔐 GitHub Secrets (Optional)
+
+| Secret Name   | Description                          |
+|---------------|--------------------------------------|
+| `EXPO_TOKEN`  | Your Expo token (`eas token:create`) |
+
+> No need to store the `.json` in GitHub — EAS securely manages it.
+
+---
+
+## 🏁 Run the GitHub Workflows
+
+Once set up:
+
+- Go to **GitHub → Actions**
+- Run:
+  - ✅ `🚀 EAS Build for Android` – to build your `.aab`
+  - ✅ `📤 EAS Submit Android Build` – to upload to Google Play
+
+---
+
+## 🔄 Updating the Service Account
+
+If the key ever expires or you rotate it:
+- Generate a new `.json`
+- Run the upload command again
+
+```bash
+eas submit --platform android --profile production --key ./new-key.json
+```
+
+---
+
+## ℹ️ Note on EAS Auto-Submit & Workflows
+
+You may see Expo docs mentioning:
+
+```bash
+eas build --platform android --auto-submit
+```
+
+Or using `.eas/workflows/submit-android.yml`.
+
+✅ You do **NOT** need those because you're using the **recommended GitHub Actions CI/CD** method:
+- Full control over build and deploy
+- Clean separation of build and submit
+- Greater visibility and easier debugging
+
+🎯 This is the officially supported method and you're doing it the right way.
+
+---
+
 _Last updated: July 2025_
+
