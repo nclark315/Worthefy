@@ -1,0 +1,152 @@
+# 📖 README for Manager – iOS Deployment Setup
+
+This guide explains what YOU (the iOS manager with Apple Developer access) need to do in order to enable automatic deployment of the iOS app through GitHub Actions and Expo.
+
+---
+
+## ✅ What You Need to Do (One-Time Setup)
+
+### 1. 🔐 Set Up iOS Credentials with Expo
+
+Open Terminal (macOS) and run:
+
+```bash
+eas login
+eas credentials
+```
+
+Follow the prompts to:
+- Select the iOS app bundle ID (e.g. com.yourcompany.app)
+- Allow EAS to generate/upload distribution certificate & provisioning profile
+
+---
+
+### 2. 🧾 Create App Store Connect API Key
+
+1. Go to: https://appstoreconnect.apple.com/access/api
+2. Click **Generate API Key**
+3. Note down:
+   - ✅ **Key ID**
+   - ✅ **Issuer ID**
+   - ✅ Download the `.p8` file
+
+---
+
+### 3. 🔁 Base64 Encode the `.p8` Key
+
+```bash
+base64 AuthKey_XXXXXXXXXX.p8 > apple_key_base64.txt
+```
+
+Copy the contents of `apple_key_base64.txt`.
+
+---
+
+### 4. 🔐 Add the Following GitHub Secrets
+
+Go to GitHub → Repo → Settings → Secrets → Actions → **New Repository Secret**
+
+| Secret Name             | Value you provide                       |
+|--------------------------|------------------------------------------|
+| `EXPO_TOKEN`            | Expo access token (`eas token:create`)   |
+| `EAS_APPLE_SUBMIT_KEY` | Base64 content of `.p8` file              |
+| `APPLE_KEY_ID`         | From App Store Connect API key           |
+| `APPLE_ISSUER_ID`      | From App Store Connect API key           |
+
+---
+
+## 🏁 Running the Workflow
+
+After secrets are added:
+
+- Go to **GitHub → Actions tab**
+- Click **📤 EAS Submit iOS Build**
+- Click **"Run workflow"**
+
+🎉 The `.ipa` will be submitted to App Store Connect!
+
+---
+
+## 📌 Notes
+
+- You only need to do this once per app (unless certs expire)
+- The developer on Windows can now trigger builds any time
+- You still have manual control via Transporter if needed
+
+---
+
+_Last updated: July 2025_
+
+
+
+# 📖 README for Manager – Android Deployment Setup
+
+This guide explains what YOU (the Play Store account manager) need to do to enable automatic deployment of the Android app using GitHub Actions and Expo EAS.
+
+---
+
+## ✅ What You Need to Do (One-Time Setup)
+
+### 1. 🔐 Link Your Google Play Developer Account to Expo
+
+Open terminal and run:
+
+```bash
+eas login
+eas credentials
+```
+
+Follow the prompts to:
+- Set up or upload an Android keystore (Expo can generate one for you)
+- Ensure the package name in `app.json` matches the app in the Play Store
+  - Example: `"android": { "package": "com.yourcompany.app" }`
+
+---
+
+### 2. 🧾 Create a Google Play Service Account
+
+This allows Expo to upload builds directly to Google Play.
+
+#### Steps:
+
+1. Go to the Google Cloud Console: https://console.cloud.google.com/
+2. Create a **Service Account**
+3. Grant it access to **Google Play Android Developer API**
+4. Generate a `.json` key file
+
+📘 Detailed guide: https://docs.expo.dev/submit/android/#google-service-account
+
+---
+
+### 3. 🔐 Add GitHub Secret (optional for auto-submit)
+
+If you plan to submit via GitHub Actions:
+
+| GitHub Secret Name | Value                                 |
+|---------------------|----------------------------------------|
+| `EXPO_TOKEN`        | Expo token (`eas token:create`)        |
+
+📌 Expo will securely store your `.json` key in their submit pipeline during `eas submit`.
+
+---
+
+## 🏁 Running the Workflow
+
+Once set up:
+
+- Go to **GitHub → Actions**
+- Run:
+  - ✅ **🚀 EAS Build for Android** to generate the `.aab` or `.apk`
+  - ✅ **📤 EAS Submit Android Build** to publish to Play Store
+
+---
+
+## 💡 Tips
+
+- You only need to set this up once per app
+- Expo securely manages keystore and credentials
+- If you ever lose the keystore, it **cannot be recovered** — back it up!
+
+---
+
+_Last updated: July 2025_
